@@ -1660,6 +1660,7 @@ MonoBehaviour:
   Btn_Scissors: {fileID: 3086054795370283484}
   Btn_Paper: {fileID: 2903669387488347199}
   Txt_Waiting: {fileID: 6894253485947851282}
-  Sprite_Rock: {fileID: 594174664, guid: 027d1c7ae8acf27449bddc2647f9afd3, type: 3}
-  Sprite_Scissors: {fileID: 1062923098, guid: 027d1c7ae8acf27449bddc2647f9afd3, type: 3}
-  Sprite_Paper: {fileID: -1914916992, guid: 027d1c7ae8acf27449bddc2647f9afd3, type: 3}
+  Sprites_RSP:
+  - {fileID: 594174664, guid: 027d1c7ae8acf27449bddc2647f9afd3, type: 3}
+  - {fileID: 1062923098, guid: 027d1c7ae8acf27449bddc2647f9afd3, type: 3}
+  - {fileID: -1914916992, guid: 027d1c7ae8acf27449bddc2647f9afd3, type: 3}
