@@ -41,32 +41,35 @@ public class MyPlayer : NetworkBehaviour
         if (isLocalPlayer)
         {
             Debug.Log("로컬플레이어가 Cmd 호출함");
-            CmdSendMoveToGameManager(isServer, _currentRSP);
+            CmdSendMoveToGameManager(_currentRSP);
         }
     }
 
     [Command]
-    public void CmdSendMoveToGameManager(bool imServer, RSP playerRSP)
+    public void CmdSendMoveToGameManager(RSP playerRSP)
     {
         Debug.Log("Cmd까지 오긴 오지?");
         
-        if(imServer) { _gameManager.RSP_Server = playerRSP; }
-        else { _gameManager.RSP_Client = playerRSP; }
+        if(isServer && isClient) { _gameManager.RSP_Server = playerRSP; }
+        else if (!isServer && isClient){ _gameManager.RSP_Client = playerRSP; }
 
         _gameManager.CheckChoices();
     }
 
     [ClientRpc]
-    public void RpcSendResult(WinLose winLose)
+    public void RpcSendResult(WinLose result)
     {
         Debug.Log("isServer:" + isServer + " 이것은 아마 모든 클라에서");
 
-        _currentWinLose = winLose;
-
+        if (_rockScissorsPaperUI == null)
+        {
+            Debug.LogError("RpcSendResult: _rockScissorsPaperUI is null.");
+            return;
+        }
 
         _rockScissorsPaperUI.Img_YourRSP.sprite = Sprites_RSP[(int)this._currentRSP];
 
-        if(this._currentWinLose == WinLose.WIN)
+        if(result == WinLose.WIN)
         {
             switch (this._currentRSP) 
             {
@@ -81,7 +84,7 @@ public class MyPlayer : NetworkBehaviour
                     break;
             }
         }
-        else if(this._currentWinLose == WinLose.DRAW)
+        else if(result == WinLose.DRAW)
         {
             _rockScissorsPaperUI.Img_OppoRSP.sprite = Sprites_RSP[(int)this._currentRSP];
         }
