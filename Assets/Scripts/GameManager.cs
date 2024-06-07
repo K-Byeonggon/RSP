@@ -2,28 +2,72 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using RSP_Enums;
+using Mirror;
 
-public class GameManager : MonoBehaviour
+public class GameManager : NetworkBehaviour
 {
-    private MyPlayer[] _players = new MyPlayer[2];
-    private int _playerCount = 0;
+    public MyPlayer Player_Server;
+    public MyPlayer Player_Client;
+
+    public RSP RSP_Server = RSP.Default;
+    public RSP RSP_Client = RSP.Default;
+
+    public WinLose WinLose_Server = WinLose.Default;
+    public WinLose WinLose_Client = WinLose.Default;
+    
+
 
     public void OnStartClient_MyPlayer_RegisterPlayer(MyPlayer player)
     {
-        if(_playerCount < 2)
+        
+        Debug.Log("this.isServer: " + this.isServer);
+        
+
+        if (player.isLocalPlayer)
         {
-            _players[_playerCount] = player;
-            _playerCount++;
+            Debug.Log("isServer: " + player.isServer);
+            Debug.Log("isClient: " + player.isClient);
+            Debug.Log("isServerOnly: " + player.isServerOnly);
+            Debug.Log("isClientOnly: " + player.isClientOnly);
         }
+
+        //서버의 게임매니저
+        if (this.isServer)
+        {
+            if(player.isLocalPlayer) { Debug.Log("서버플레이어 등록하려고함"); Player_Server = player; }
+            else { Debug.Log("클라플레이어 등록하려고함"); Player_Client = player; }
+        }
+        else 
+        {
+            if (!player.isLocalPlayer) { Debug.Log("서버플레이어 등록하려고함"); Player_Server = player; }
+            else { Debug.Log("클라플레이어 등록하려고함"); Player_Client = player; }
+        }
+
+        //if (player.isServer) { Debug.Log("서버플레이어 등록하려고함"); Player_Server = player; }
+        //else if (!player.isServer) { Debug.Log("클라플레이어 등록하려고함"); Player_Client = player; }
+
+        //이러면 서버에서는 player.isLocal && player.isServer 이면 서버에, !player.isLocal && !player.isServer 이면 클라에,
+        //      클라에서는 !player.isLocal && player.isServer 이면 서버에, player.isLocal && !player.isServer면 클라에.
+        //완전히 게임매니저가 어디 있냐에 따라 동작이 달라짐. 그래서 문제가 생겼음.
+
     }
+
 
     public void CheckChoices()
     {
-        if (_players[0]._currentRSP != RSP.Default &&
-            _players[1]._currentRSP != RSP.Default)
+        if (Player_Server == null ) { Debug.LogError("서버 플레이어 등록 안됨!"); return; }
+        if (Player_Client == null ) { Debug.LogError("클라 플레이어 등록 안됨!"); return; }
+
+        Debug.Log("아마 서버에서만 실행되는 것");
+        if (RSP_Server != RSP.Default &&
+            RSP_Client != RSP.Default)
         {
-            DetermineWinLose(_players[0]._currentRSP, _players[1]._currentRSP, 
-                out _players[0]._currentState, out _players[1]._currentState);
+            Debug.Log("두 플레이어의 정보를 받는데 성공했다.");
+            DetermineWinLose(RSP_Server, RSP_Client, 
+                out WinLose_Server, out WinLose_Client);
+
+            Player_Server.RpcSendResult(WinLose_Server);
+            Player_Client.RpcSendResult(WinLose_Client);
         }
     }
 
