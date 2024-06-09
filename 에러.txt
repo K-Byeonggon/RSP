@@ -1,0 +1,1 @@
+내 클라에 있는 상대 플레이어에 _rockScissorsPaper가 초기화가 안되어 있어서 Error가 발생한 것
