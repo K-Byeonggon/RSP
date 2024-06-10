@@ -63,45 +63,48 @@ public class MyPlayer : NetworkBehaviour
 
         _currentWinLose = winLose;
 
-
-        _rockScissorsPaperUI.Img_YourRSP.sprite = Sprites_RSP[(int)this._currentRSP];
-
-        if(this._currentWinLose == WinLose.WIN)
+        if (isLocalPlayer)
         {
-            switch (this._currentRSP) 
+            _rockScissorsPaperUI.Img_YourRSP.sprite = Sprites_RSP[(int)this._currentRSP];
+
+            if (this._currentWinLose == WinLose.WIN)
             {
-                case(RSP.ROCK):
-                    _rockScissorsPaperUI.Img_OppoRSP.sprite = Sprites_RSP[1];
-                    break;
-                case(RSP.SCISSORS):
-                    _rockScissorsPaperUI.Img_OppoRSP.sprite = Sprites_RSP[2];
-                    break;
-                case(RSP.PAPER):
-                    _rockScissorsPaperUI.Img_OppoRSP.sprite = Sprites_RSP[0];
-                    break;
+                switch (this._currentRSP)
+                {
+                    case (RSP.ROCK):
+                        _rockScissorsPaperUI.Img_OppoRSP.sprite = Sprites_RSP[1];
+                        break;
+                    case (RSP.SCISSORS):
+                        _rockScissorsPaperUI.Img_OppoRSP.sprite = Sprites_RSP[2];
+                        break;
+                    case (RSP.PAPER):
+                        _rockScissorsPaperUI.Img_OppoRSP.sprite = Sprites_RSP[0];
+                        break;
+                }
             }
-        }
-        else if(this._currentWinLose == WinLose.DRAW)
-        {
-            _rockScissorsPaperUI.Img_OppoRSP.sprite = Sprites_RSP[(int)this._currentRSP];
-        }
-        else
-        {
-            switch (this._currentRSP)
+            else if (this._currentWinLose == WinLose.DRAW)
             {
-                case (RSP.ROCK):
-                    _rockScissorsPaperUI.Img_OppoRSP.sprite = Sprites_RSP[2];
-                    break;
-                case (RSP.SCISSORS):
-                    _rockScissorsPaperUI.Img_OppoRSP.sprite = Sprites_RSP[0];
-                    break;
-                case (RSP.PAPER):
-                    _rockScissorsPaperUI.Img_OppoRSP.sprite = Sprites_RSP[1];
-                    break;
+                _rockScissorsPaperUI.Img_OppoRSP.sprite = Sprites_RSP[(int)this._currentRSP];
             }
+            else
+            {
+                switch (this._currentRSP)
+                {
+                    case (RSP.ROCK):
+                        _rockScissorsPaperUI.Img_OppoRSP.sprite = Sprites_RSP[2];
+                        break;
+                    case (RSP.SCISSORS):
+                        _rockScissorsPaperUI.Img_OppoRSP.sprite = Sprites_RSP[0];
+                        break;
+                    case (RSP.PAPER):
+                        _rockScissorsPaperUI.Img_OppoRSP.sprite = Sprites_RSP[1];
+                        break;
+                }
+            }
+
+
         }
 
-    
     }
 
 
