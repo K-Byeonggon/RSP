@@ -247,7 +247,7 @@ MonoBehaviour:
   evaluationInterval: 3
   timeInterpolationGui: 0
   showRoomGUI: 1
-  minPlayers: 1
+  minPlayers: 2
   roomPlayerPrefab: {fileID: 8592880666390203091, guid: b95cc46bc1103814ab901f6bd85f89b3, type: 3}
   RoomScene: Assets/Scenes/OnlineScene.unity
   GameplayScene: Assets/Scenes/GameScene.unity

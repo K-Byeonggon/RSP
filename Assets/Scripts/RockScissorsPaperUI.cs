@@ -19,6 +19,6 @@ public class RockScissorsPaperUI : MonoBehaviour
 
     [Header("Sprites: 0.Rock 1.Scissors 2.Paper")]
     [SerializeField] public Sprite[] Sprites_RSP = new Sprite[3];
-
+    [SerializeField] public Sprite Sprites_Empty;
 
 }
