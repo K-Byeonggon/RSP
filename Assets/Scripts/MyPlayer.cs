@@ -63,8 +63,27 @@ public class MyPlayer : NetworkBehaviour
 
         _currentWinLose = winLose;
 
+        
+
         if (isLocalPlayer)
         {
+            if(winLose == WinLose.WIN)
+            {
+                _rockScissorsPaperUI.Txt_WinLose.text = "You Win!";
+            }
+            else if(winLose == WinLose.DRAW)
+            {
+                _rockScissorsPaperUI.Txt_WinLose.text = "DRAW";
+            }
+            else if(winLose == WinLose.LOSE)
+            {
+                _rockScissorsPaperUI.Txt_WinLose.text = "You Lose..";
+            }
+            else
+            {
+                _rockScissorsPaperUI.Txt_WinLose.text = "???";
+            }
+
             _rockScissorsPaperUI.Img_YourRSP.sprite = Sprites_RSP[(int)this._currentRSP];
 
             if (this._currentWinLose == WinLose.WIN)
