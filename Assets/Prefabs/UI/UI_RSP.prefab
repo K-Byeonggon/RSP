@@ -1549,6 +1549,7 @@ GameObject:
   - component: {fileID: 1755427488261333398}
   - component: {fileID: 5651255054391017691}
   - component: {fileID: 665618281688621816}
+  - component: {fileID: 8739323405242265926}
   m_Layer: 5
   m_Name: UI_RSP
   m_TagString: Untagged
@@ -1652,6 +1653,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 632671abebeb326479a8ab6eebc29105, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   Img_YourRSP: {fileID: 5332487285993219340}
   Img_OppoRSP: {fileID: 8136681123509546004}
   Txt_WinLose: {fileID: 550222313514682613}
@@ -1665,3 +1669,22 @@ MonoBehaviour:
   - {fileID: 1334906731, guid: 027d1c7ae8acf27449bddc2647f9afd3, type: 3}
   - {fileID: -772526024, guid: 027d1c7ae8acf27449bddc2647f9afd3, type: 3}
   Sprites_Empty: {fileID: 21300000, guid: c5a98b92d1bf0c44380f2b775a829b14, type: 3}
+  Player_You: {fileID: 0}
+  Player_Opp: {fileID: 0}
+--- !u!114 &8739323405242265926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8292249554195872253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 0
+  _assetId: 419416530
+  serverOnly: 0
+  visibility: 0
+  hasSpawned: 0

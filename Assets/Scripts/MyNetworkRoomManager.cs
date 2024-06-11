@@ -5,6 +5,7 @@ using Mirror;
 
 public class MyNetworkRoomManager : NetworkRoomManager
 {
+
     public override void OnStartServer()
     {
         base.OnStartServer();
@@ -21,5 +22,40 @@ public class MyNetworkRoomManager : NetworkRoomManager
         }
 
         base.OnRoomServerConnect(conn);
+
+        Debug.Log("OnRoomServerConnect");
+    }
+
+    public override void OnRoomServerAddPlayer(NetworkConnectionToClient conn)
+    {
+        base.OnRoomServerAddPlayer(conn);
+
+        //플레이어가 룸입장 성공하면 플레이어 등록
+        Debug.Log("OnRoomServerAddPlayer");
+
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.OnRoomServerAddPlayer_RegisterPlayer(conn);
+        }
+        else
+        {
+            Debug.LogError("GameManager.Instance is null");
+        }
+    }
+
+    public override void OnRoomServerDisconnect(NetworkConnectionToClient conn)
+    {
+        //클라가 연결 끊기면 플레이어 등록 해제
+        
+        if(GameManager.Instance != null)
+        {
+            GameManager.Instance.OnRoomServerDisconnect_UnRegisterPlayer(conn);
+        }
+        else
+        {
+            Debug.LogError("GameManager.Instance is null");
+        }
+
+        base.OnRoomServerDisconnect(conn);
     }
 }

@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Mirror;
 
-public class RockScissorsPaperUI : MonoBehaviour
+public class RockScissorsPaperUI : NetworkBehaviour
 {
     [Header("Panel_WinLose")]
     [SerializeField] public Image Img_YourRSP;
@@ -20,5 +21,11 @@ public class RockScissorsPaperUI : MonoBehaviour
     [Header("Sprites: 0.Rock 1.Scissors 2.Paper")]
     [SerializeField] public Sprite[] Sprites_RSP = new Sprite[3];
     [SerializeField] public Sprite Sprites_Empty;
+
+    [Header("Player")]
+    [SerializeField] MyPlayer Player_You;
+    [SerializeField] MyPlayer Player_Opp;
+
+
 
 }

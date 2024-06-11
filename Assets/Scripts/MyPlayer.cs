@@ -41,17 +41,16 @@ public class MyPlayer : NetworkBehaviour
         if (isLocalPlayer)
         {
             Debug.Log("로컬플레이어가 Cmd 호출함");
-            CmdSendMoveToGameManager(isServer, _currentRSP);
+            CmdSendMoveToGameManager(_currentRSP);
         }
     }
 
     [Command]
-    public void CmdSendMoveToGameManager(bool imServer, RSP playerRSP)
+    public void CmdSendMoveToGameManager(RSP playerRSP)
     {
         Debug.Log("Cmd까지 오긴 오지?");
         
-        if(imServer) { _gameManager.RSP_Server = playerRSP; }
-        else { _gameManager.RSP_Client = playerRSP; }
+        _gameManager.RSP_You = playerRSP;
 
         _gameManager.CheckChoices();
     }

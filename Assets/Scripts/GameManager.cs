@@ -6,15 +6,62 @@ using Mirror;
 
 public class GameManager : NetworkBehaviour
 {
-    public MyPlayer Player_Server;
-    public MyPlayer Player_Client;
+    //서버에서 플레이어들을 등록하려면 GameManager가 OnlineScene에 존재하고 Singleton일 필요가 있을 것 같다.
+    public static GameManager Instance { get; private set; }
 
-    public RSP RSP_Server = RSP.Default;
-    public RSP RSP_Client = RSP.Default;
+    public MyPlayer Player_You;
+    public MyPlayer Player_Oppo;
 
-    public WinLose WinLose_Server = WinLose.Default;
-    public WinLose WinLose_Client = WinLose.Default;
-    
+    public RSP RSP_You = RSP.Default;
+    public RSP RSP_Oppo = RSP.Default;
+
+    public WinLose WinLose_You = WinLose.Default;
+    public WinLose WinLose_Oppo = WinLose.Default;
+
+    public List<MyPlayer> players = new List<MyPlayer>(2);
+
+    /*
+    GameManager는 서버에서 게임 로직과 데이터를 처리하고,
+    클라에서는 UI를 업데이트하고 결과를 표시한다.
+     */
+
+
+    private void Awake()
+    {
+        if(Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+
+    public void OnRoomServerAddPlayer_RegisterPlayer(NetworkConnectionToClient conn)
+    {
+        Debug.Log("OnRoomServerAddPlayer_RegisterPlayer");
+        var player = conn.identity.GetComponent<MyPlayer>();
+
+        if (!players.Contains(player))
+        {
+            players.Add(player);
+            Debug.Log("Player registered: " + player.netId);
+        }
+    }
+
+    public void OnRoomServerDisconnect_UnRegisterPlayer(NetworkConnectionToClient conn)
+    {
+        var player = conn.identity.GetComponent<MyPlayer>();
+
+        if (players.Contains(player))
+        {
+            players.Remove(player);
+            Debug.Log("Player unregistered: " + player.netId);
+        }
+    }
 
 
     public void OnStartClient_MyPlayer_RegisterPlayer(MyPlayer player)
@@ -31,43 +78,27 @@ public class GameManager : NetworkBehaviour
             Debug.Log("isClientOnly: " + player.isClientOnly);
         }
 
-        //서버의 게임매니저
-        if (this.isServer)
-        {
-            if(player.isLocalPlayer) { Debug.Log("서버플레이어 등록하려고함"); Player_Server = player; }
-            else { Debug.Log("클라플레이어 등록하려고함"); Player_Client = player; }
-        }
-        else 
-        {
-            if (!player.isLocalPlayer) { Debug.Log("서버플레이어 등록하려고함"); Player_Server = player; }
-            else { Debug.Log("클라플레이어 등록하려고함"); Player_Client = player; }
-        }
+        //이제 서버가 따로 있고, 서버가 아닌 두 클라가 방에 들어와 게임을 시작한다.
+        //그러면 플레이어 등록을 Player1, Player2 이렇게 등록해야겠다.
 
-        //if (player.isServer) { Debug.Log("서버플레이어 등록하려고함"); Player_Server = player; }
-        //else if (!player.isServer) { Debug.Log("클라플레이어 등록하려고함"); Player_Client = player; }
-
-        //이러면 서버에서는 player.isLocal && player.isServer 이면 서버에, !player.isLocal && !player.isServer 이면 클라에,
-        //      클라에서는 !player.isLocal && player.isServer 이면 서버에, player.isLocal && !player.isServer면 클라에.
-        //완전히 게임매니저가 어디 있냐에 따라 동작이 달라짐. 그래서 문제가 생겼음.
 
     }
 
 
     public void CheckChoices()
     {
-        if (Player_Server == null ) { Debug.LogError("서버 플레이어 등록 안됨!"); return; }
-        if (Player_Client == null ) { Debug.LogError("클라 플레이어 등록 안됨!"); return; }
+        if (Player_You == null ) { Debug.LogError("플레이어(나) 등록 안됨!"); return; }
+        if (Player_Oppo == null ) { Debug.LogError("플레이어(상대) 등록 안됨!"); return; }
 
         Debug.Log("아마 서버에서만 실행되는 것");
-        if (RSP_Server != RSP.Default &&
-            RSP_Client != RSP.Default)
+        if (RSP_You != RSP.Default &&
+            RSP_Oppo != RSP.Default)
         {
             Debug.Log("두 플레이어의 정보를 받는데 성공했다.");
-            DetermineWinLose(RSP_Server, RSP_Client, 
-                out WinLose_Server, out WinLose_Client);
+            DetermineWinLose(RSP_You, RSP_Oppo, out WinLose_You, out WinLose_Oppo);
 
-            Player_Server.RpcSendResult(WinLose_Server);
-            Player_Client.RpcSendResult(WinLose_Client);
+            Player_You.RpcSendResult(WinLose_You);
+            Player_Oppo.RpcSendResult(WinLose_Oppo);
         }
     }
 
