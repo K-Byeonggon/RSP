@@ -26,16 +26,16 @@ public class MyNetworkRoomManager : NetworkRoomManager
         Debug.Log("OnRoomServerConnect");
     }
 
-    public override void OnRoomServerAddPlayer(NetworkConnectionToClient conn)
+    public override void OnServerAddPlayer(NetworkConnectionToClient conn)
     {
-        base.OnRoomServerAddPlayer(conn);
+        base.OnServerAddPlayer(conn);
 
         //플레이어가 룸입장 성공하면 플레이어 등록
-        Debug.Log("OnRoomServerAddPlayer");
+        Debug.Log("OnServerAddPlayer");
 
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.OnRoomServerAddPlayer_RegisterPlayer(conn);
+            GameManager.Instance.OnServerAddPlayer_RegisterPlayer(conn);
         }
         else
         {

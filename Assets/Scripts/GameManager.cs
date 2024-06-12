@@ -40,15 +40,28 @@ public class GameManager : NetworkBehaviour
     }
 
 
-    public void OnRoomServerAddPlayer_RegisterPlayer(NetworkConnectionToClient conn)
+    public void OnServerAddPlayer_RegisterPlayer(NetworkConnectionToClient conn)
     {
-        Debug.Log("OnRoomServerAddPlayer_RegisterPlayer");
+        Debug.Log("OnServerAddPlayer_RegisterPlayer");
+
+        if (conn.identity == null) Debug.Log("conn.identity == null");
+        else { Debug.Log($"{conn.identity.name}"); }
+
         var player = conn.identity.GetComponent<MyPlayer>();
+
+        if (player == null) Debug.Log("player == null");
 
         if (!players.Contains(player))
         {
             players.Add(player);
-            Debug.Log("Player registered: " + player.netId);
+            if(player != null)
+            {
+                Debug.Log("Player registered: " + player.netId);
+            }
+            else
+            {
+                Debug.Log("conn.identity == null or 컴포넌트 못Get함");
+            }
         }
     }
 
