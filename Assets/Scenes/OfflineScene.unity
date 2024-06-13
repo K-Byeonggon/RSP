@@ -230,7 +230,8 @@ MonoBehaviour:
   playerPrefab: {fileID: 3241543849299514794, guid: 1dbf62ae4dd6a3643bc315d538e2f87d, type: 3}
   autoCreatePlayer: 1
   playerSpawnMethod: 0
-  spawnPrefabs: []
+  spawnPrefabs:
+  - {fileID: 7210552977646633617, guid: 4c7e0b5bde20898419f25a15de48f9c9, type: 3}
   exceptionsDisconnect: 1
   snapshotSettings:
     bufferTimeMultiplier: 2
@@ -254,6 +255,7 @@ MonoBehaviour:
   _allPlayersReady: 0
   roomSlots: []
   clientIndex: 0
+  Prefab_GameManager: {fileID: 7210552977646633617, guid: 4c7e0b5bde20898419f25a15de48f9c9, type: 3}
 --- !u!1 &917040306
 GameObject:
   m_ObjectHideFlags: 0

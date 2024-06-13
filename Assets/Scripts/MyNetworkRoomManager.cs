@@ -5,6 +5,7 @@ using Mirror;
 
 public class MyNetworkRoomManager : NetworkRoomManager
 {
+    [SerializeField] GameObject Prefab_GameManager;
 
     public override void OnStartServer()
     {
@@ -26,22 +27,44 @@ public class MyNetworkRoomManager : NetworkRoomManager
         Debug.Log("OnRoomServerConnect");
     }
 
-    public override void OnServerAddPlayer(NetworkConnectionToClient conn)
+    public override void OnRoomServerSceneChanged(string sceneName)
     {
-        base.OnServerAddPlayer(conn);
+        base.OnRoomServerSceneChanged(sceneName);
 
-        //플레이어가 룸입장 성공하면 플레이어 등록
-        Debug.Log("OnServerAddPlayer");
+        //Debug.Log("sceneName: " + sceneName); //scene이름 확인용
+
+        if(sceneName == "Assets/Scenes/GameScene.unity")
+        {
+            //OnRoomServerSceneChanged는 서버에서만 실행된다.
+            //서버에서 생성한 GameManager를 NetworkServer.Spawn을 통해 클라에 동기화 해주어야 한다.
+            //NetworkRoomManager의 Registered Spawnable Prefabs에 GameManager프리펩을 추가하는 것을 잊지말자.
+
+            GameObject gameManager = Instantiate(Prefab_GameManager);
+            NetworkServer.Spawn(gameManager);
+        }
+        else
+            Debug.Log("OnRoomServersceneChanged: GameScene 아님.");
+    }
+
+    public override void OnServerReady(NetworkConnectionToClient conn)
+    {
+        base.OnServerReady(conn);
+
+        Debug.Log($"(conn.identity == null) = {conn.identity == null}");
+
+        Debug.Log("OnServerReady: 플레이어 GameManager에 등록 시도");
 
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.OnServerAddPlayer_RegisterPlayer(conn);
+            GameManager.Instance.OnServerReady_RegisterPlayer(conn);
         }
         else
         {
             Debug.LogError("GameManager.Instance is null");
         }
+
     }
+
 
     public override void OnRoomServerDisconnect(NetworkConnectionToClient conn)
     {

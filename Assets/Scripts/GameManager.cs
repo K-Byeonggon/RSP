@@ -40,9 +40,9 @@ public class GameManager : NetworkBehaviour
     }
 
 
-    public void OnServerAddPlayer_RegisterPlayer(NetworkConnectionToClient conn)
+    public void OnServerReady_RegisterPlayer(NetworkConnectionToClient conn)
     {
-        Debug.Log("OnServerAddPlayer_RegisterPlayer");
+        Debug.Log("OnServerReady_RegisterPlayer");
 
         if (conn.identity == null) Debug.Log("conn.identity == null");
         else { Debug.Log($"{conn.identity.name}"); }
